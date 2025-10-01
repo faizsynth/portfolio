@@ -17,6 +17,11 @@
             height: 100vh;
             overflow: hidden;
             position: relative;
+            transition: background-color 0.3s ease;
+        }
+        
+        body.dark-mode {
+            background-color: #0a0a0a;
         }
         
         .circle {
@@ -25,12 +30,16 @@
             top: 30px;
             width: 25px;
             height: 25px;
-            background-color: #808080; /* grey */
+            background-color: #808080;
             border-radius: 50%;
             cursor: pointer;
             transition: all 0.3s ease;
-            z-index: 10;
+            z-index: 100;
             animation: subtle-pulse 4s infinite ease-in-out;
+        }
+        
+        .dark-mode .circle {
+            background-color: #a0a0a0;
         }
         
         .circle:hover {
@@ -41,11 +50,10 @@
         
         .circle:active {
             transform: scale(0.95);
-            transition: transform 0.1s ease;
         }
         
         @keyframes subtle-pulse {
-            0% {
+            0%, 100% {
                 transform: scale(1);
                 opacity: 0.8;
             }
@@ -53,10 +61,40 @@
                 transform: scale(1.05);
                 opacity: 1;
             }
-            100% {
-                transform: scale(1);
-                opacity: 0.8;
-            }
+        }
+        
+        .header {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            z-index: 100;
+        }
+        
+        .dark-mode-toggle {
+            font-size: 11px;
+            color: #777;
+            cursor: pointer;
+            padding: 5px 10px;
+            border: 1px solid #f0f0f0;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+            text-transform: lowercase;
+            background: transparent;
+        }
+        
+        .dark-mode .dark-mode-toggle {
+            color: #a0a0a0;
+            border-color: #333;
+        }
+        
+        .dark-mode-toggle:hover {
+            color: #555;
+            border-color: #808080;
+        }
+        
+        .dark-mode .dark-mode-toggle:hover {
+            color: #cccccc;
+            border-color: #a0a0a0;
         }
         
         .about-container {
@@ -71,9 +109,12 @@
             line-height: 1.6;
             font-size: 14px;
             letter-spacing: 0.5px;
-            opacity: 1;
-            transition: opacity 0.5s ease, transform 0.5s ease;
             text-transform: lowercase;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        
+        .dark-mode .about-container {
+            color: #e0e0e0;
         }
         
         .about-heading {
@@ -84,9 +125,17 @@
             color: #555;
         }
         
+        .dark-mode .about-heading {
+            color: #cccccc;
+        }
+        
         .about-text {
             font-style: italic;
             color: #777;
+        }
+        
+        .dark-mode .about-text {
+            color: #a0a0a0;
         }
         
         .about-container.hidden {
@@ -99,21 +148,16 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -40%);
-            display: flex;
+            transform: translate(-50%, -50%);
+            display: none;
             flex-direction: column;
             align-items: center;
-            z-index: 5;
-            opacity: 0;
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            pointer-events: none;
+            z-index: 50;
             text-transform: lowercase;
         }
         
         .menu.visible {
-            opacity: 1;
-            transform: translate(-50%, -50%);
-            pointer-events: all;
+            display: flex;
         }
         
         .menu-item {
@@ -124,28 +168,19 @@
             transition: color 0.3s ease, transform 0.3s ease;
             color: #555;
             letter-spacing: 1px;
-            opacity: 0;
-            transform: translateX(-10px);
         }
         
-        .menu.visible .menu-item:nth-child(1) {
-            animation: fadeInLeft 0.5s ease 0.1s forwards;
-        }
-        
-        .menu.visible .menu-item:nth-child(2) {
-            animation: fadeInLeft 0.5s ease 0.2s forwards;
-        }
-        
-        @keyframes fadeInLeft {
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+        .dark-mode .menu-item {
+            color: #cccccc;
         }
         
         .menu-item:hover {
             color: #808080;
             transform: translateX(5px);
+        }
+        
+        .dark-mode .menu-item:hover {
+            color: #a0a0a0;
         }
         
         footer {
@@ -154,8 +189,12 @@
             right: 20px;
             font-size: 14px;
             color: #777;
-            transition: opacity 0.5s ease;
             text-transform: lowercase;
+            z-index: 10;
+        }
+        
+        .dark-mode footer {
+            color: #a0a0a0;
         }
         
         footer a {
@@ -165,9 +204,17 @@
             transition: color 0.3s ease;
         }
         
+        .dark-mode footer a {
+            color: #a0a0a0;
+        }
+        
         footer a:hover {
             color: #555;
             text-decoration: underline;
+        }
+        
+        .dark-mode footer a:hover {
+            color: #cccccc;
         }
         
         .projects-content, .thoughts-content {
@@ -183,24 +230,20 @@
             line-height: 1.6;
             font-size: 14px;
             letter-spacing: 0.5px;
-            opacity: 0;
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            pointer-events: none;
+            display: none;
             text-transform: lowercase;
-            display: flex;
             flex-direction: column;
             height: 70vh;
+            z-index: 50;
+        }
+        
+        .dark-mode .projects-content,
+        .dark-mode .thoughts-content {
+            color: #e0e0e0;
         }
         
         .projects-content.visible, .thoughts-content.visible {
-            opacity: 1;
-            pointer-events: all;
-        }
-        
-        .projects-content.hidden, .thoughts-content.hidden {
-            opacity: 0;
-            transform: translate(-50%, -60%);
-            pointer-events: none;
+            display: flex;
         }
         
         .projects-list {
@@ -212,6 +255,10 @@
             margin-bottom: 40px;
             padding-bottom: 30px;
             border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .dark-mode .project-item {
+            border-bottom: 1px solid #333;
         }
         
         .project-item:last-child {
@@ -227,20 +274,36 @@
             color: #555;
         }
         
+        .dark-mode .project-name {
+            color: #cccccc;
+        }
+        
         .project-name a {
             color: #555;
             text-decoration: none;
             transition: color 0.3s ease;
         }
         
+        .dark-mode .project-name a {
+            color: #cccccc;
+        }
+        
         .project-name a:hover {
             color: #808080;
+        }
+        
+        .dark-mode .project-name a:hover {
+            color: #a0a0a0;
         }
         
         .project-description {
             color: #777;
             margin-bottom: 15px;
             line-height: 1.7;
+        }
+        
+        .dark-mode .project-description {
+            color: #a0a0a0;
         }
         
         .pagination {
@@ -250,6 +313,10 @@
             margin-top: 30px;
             padding-top: 20px;
             border-top: 1px solid #f0f0f0;
+        }
+        
+        .dark-mode .pagination {
+            border-top: 1px solid #333;
         }
         
         .page-btn {
@@ -263,8 +330,16 @@
             font-style: italic;
         }
         
+        .dark-mode .page-btn {
+            color: #a0a0a0;
+        }
+        
         .page-btn:hover {
             color: #555;
+        }
+        
+        .dark-mode .page-btn:hover {
+            color: #cccccc;
         }
         
         .page-btn:disabled {
@@ -278,6 +353,10 @@
             align-self: center;
         }
         
+        .dark-mode .page-indicator {
+            color: #a0a0a0;
+        }
+        
         .back-btn {
             position: absolute;
             left: 30px;
@@ -285,36 +364,34 @@
             font-size: 12px;
             color: #777;
             cursor: pointer;
-            opacity: 0;
-            transition: opacity 0.5s ease, color 0.3s ease;
-            pointer-events: none;
+            display: none;
             text-transform: lowercase;
+            z-index: 50;
+        }
+        
+        .dark-mode .back-btn {
+            color: #a0a0a0;
         }
         
         .back-btn.visible {
-            opacity: 1;
-            pointer-events: all;
-            animation: fadeInUp 0.5s ease;
-        }
-        
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            display: block;
         }
         
         .back-btn:hover {
             color: #555;
         }
+        
+        .dark-mode .back-btn:hover {
+            color: #cccccc;
+        }
     </style>
 </head>
 <body>
     <div class="circle" id="menu-toggle"></div>
+    
+    <div class="header">
+        <div class="dark-mode-toggle" id="dark-mode-toggle">dark mode</div>
+    </div>
     
     <div class="about-container" id="about-container">
         <div class="about-heading">about</div>
@@ -403,11 +480,17 @@
     <div class="back-btn" id="back-btn">back</div>
     
     <footer>
-        <a href="#" target="_blank">x</a>
+        <a href="https://x.com/faizsynth?t=wfBUIj92TmzL-NsBTavVoQ&s=09" target="_blank">x</a>
         <a href="#" target="_blank">github</a>
     </footer>
 
     <script>
+        // Simple state management
+        let currentView = 'about';
+        let currentPage = 1;
+        const totalPages = 3;
+
+        // Get DOM elements
         const menuToggle = document.getElementById('menu-toggle');
         const aboutContainer = document.getElementById('about-container');
         const menu = document.getElementById('menu');
@@ -416,7 +499,7 @@
         const projectsContent = document.getElementById('projects-content');
         const thoughtsContent = document.getElementById('thoughts-content');
         const backBtn = document.getElementById('back-btn');
-        const pagination = document.getElementById('pagination');
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
         const prevBtn = document.getElementById('prev-btn');
         const nextBtn = document.getElementById('next-btn');
         const pageIndicator = document.getElementById('page-indicator');
@@ -424,28 +507,44 @@
         const page1 = document.getElementById('page-1');
         const page2 = document.getElementById('page-2');
         const page3 = document.getElementById('page-3');
-        
-        let currentView = 'about';
-        let currentPage = 1;
-        const totalPages = 3;
-        
+
+        // Dark mode functionality
+        darkModeToggle.addEventListener('click', function() {
+            document.body.classList.toggle('dark-mode');
+            
+            if (document.body.classList.contains('dark-mode')) {
+                darkModeToggle.textContent = 'light mode';
+                localStorage.setItem('darkMode', 'true');
+            } else {
+                darkModeToggle.textContent = 'dark mode';
+                localStorage.setItem('darkMode', 'false');
+            }
+        });
+
+        // Load dark mode preference
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+            darkModeToggle.textContent = 'light mode';
+        }
+
+        // Grey circle menu toggle
         menuToggle.addEventListener('click', function() {
             if (currentView === 'about') {
-                // Show menu
+                // Show menu, hide about
                 aboutContainer.classList.add('hidden');
                 menu.classList.add('visible');
                 currentView = 'menu';
             } else if (currentView === 'menu') {
-                // Return to about
+                // Show about, hide menu
                 menu.classList.remove('visible');
                 aboutContainer.classList.remove('hidden');
                 currentView = 'about';
                 backBtn.classList.remove('visible');
-            } else {
+            } else if (currentView === 'projects' || currentView === 'thoughts') {
                 // Return to menu from projects/thoughts
                 if (currentView === 'projects') {
                     projectsContent.classList.remove('visible');
-                } else if (currentView === 'thoughts') {
+                } else {
                     thoughtsContent.classList.remove('visible');
                 }
                 menu.classList.add('visible');
@@ -453,24 +552,25 @@
                 backBtn.classList.remove('visible');
             }
         });
-        
+
+        // Projects button
         projectsBtn.addEventListener('click', function() {
             menu.classList.remove('visible');
             projectsContent.classList.add('visible');
             currentView = 'projects';
             backBtn.classList.add('visible');
-            
-            // Reset to page 1
             showPage(1);
         });
-        
+
+        // Thoughts button
         thoughtsBtn.addEventListener('click', function() {
             menu.classList.remove('visible');
             thoughtsContent.classList.add('visible');
             currentView = 'thoughts';
             backBtn.classList.add('visible');
         });
-        
+
+        // Back button
         backBtn.addEventListener('click', function() {
             if (currentView === 'projects') {
                 projectsContent.classList.remove('visible');
@@ -481,26 +581,27 @@
             currentView = 'menu';
             backBtn.classList.remove('visible');
         });
-        
+
+        // Pagination
         prevBtn.addEventListener('click', function() {
             if (currentPage > 1) {
                 showPage(currentPage - 1);
             }
         });
-        
+
         nextBtn.addEventListener('click', function() {
             if (currentPage < totalPages) {
                 showPage(currentPage + 1);
             }
         });
-        
+
         function showPage(pageNumber) {
             // Hide all pages
             page1.style.display = 'none';
             page2.style.display = 'none';
             page3.style.display = 'none';
             
-            // Show the selected page
+            // Show selected page
             if (pageNumber === 1) {
                 page1.style.display = 'block';
             } else if (pageNumber === 2) {
