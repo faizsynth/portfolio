@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>minimal portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #ffffff;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .circle {
+            position: absolute;
+            left: 30px;
+            top: 30px;
+            width: 25px;
+            height: 25px;
+            background-color: #808080; /* grey */
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+            animation: subtle-pulse 4s infinite ease-in-out;
+        }
+        
+        .circle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 8px rgba(128, 128, 128, 0.5);
+            animation: none;
+        }
+        
+        .circle:active {
+            transform: scale(0.95);
+            transition: transform 0.1s ease;
+        }
+        
+        @keyframes subtle-pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+        }
+        
+        .about-container {
+            position: absolute;
+            top: 50%;
+            left: 80px;
+            transform: translateY(-50%);
+            width: 60%;
+            max-width: 500px;
+            text-align: left;
+            color: #333;
+            line-height: 1.6;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            opacity: 1;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            text-transform: lowercase;
+        }
+        
+        .about-heading {
+            font-style: italic;
+            font-weight: 600;
+            margin-bottom: 25px;
+            font-size: 16px;
+            color: #555;
+        }
+        
+        .about-text {
+            font-style: italic;
+            color: #777;
+        }
+        
+        .about-container.hidden {
+            opacity: 0;
+            transform: translateY(-60%);
+            pointer-events: none;
+        }
+        
+        .menu {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -40%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 5;
+            opacity: 0;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            pointer-events: none;
+            text-transform: lowercase;
+        }
+        
+        .menu.visible {
+            opacity: 1;
+            transform: translate(-50%, -50%);
+            pointer-events: all;
+        }
+        
+        .menu-item {
+            font-style: italic;
+            font-size: 16px;
+            margin: 12px 0;
+            cursor: pointer;
+            transition: color 0.3s ease, transform 0.3s ease;
+            color: #555;
+            letter-spacing: 1px;
+            opacity: 0;
+            transform: translateX(-10px);
+        }
+        
+        .menu.visible .menu-item:nth-child(1) {
+            animation: fadeInLeft 0.5s ease 0.1s forwards;
+        }
+        
+        .menu.visible .menu-item:nth-child(2) {
+            animation: fadeInLeft 0.5s ease 0.2s forwards;
+        }
+        
+        @keyframes fadeInLeft {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .menu-item:hover {
+            color: #808080;
+            transform: translateX(5px);
+        }
+        
+        footer {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 14px;
+            color: #777;
+            transition: opacity 0.5s ease;
+            text-transform: lowercase;
+        }
+        
+        footer a {
+            color: #777;
+            text-decoration: none;
+            margin-left: 12px;
+            transition: color 0.3s ease;
+        }
+        
+        footer a:hover {
+            color: #555;
+            text-decoration: underline;
+        }
+        
+        .projects-content, .thoughts-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70%;
+            max-width: 700px;
+            text-align: left;
+            font-style: italic;
+            color: #333;
+            line-height: 1.6;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            opacity: 0;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            pointer-events: none;
+            text-transform: lowercase;
+            display: flex;
+            flex-direction: column;
+            height: 70vh;
+        }
+        
+        .projects-content.visible, .thoughts-content.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .projects-content.hidden, .thoughts-content.hidden {
+            opacity: 0;
+            transform: translate(-50%, -60%);
+            pointer-events: none;
+        }
+        
+        .projects-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+        
+        .project-item {
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .project-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .project-name {
+            font-weight: 600;
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #555;
+        }
+        
+        .project-name a {
+            color: #555;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .project-name a:hover {
+            color: #808080;
+        }
+        
+        .project-description {
+            color: #777;
+            margin-bottom: 15px;
+            line-height: 1.7;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #f0f0f0;
+        }
+        
+        .page-btn {
+            font-size: 12px;
+            color: #777;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            text-transform: lowercase;
+            background: none;
+            border: none;
+            font-style: italic;
+        }
+        
+        .page-btn:hover {
+            color: #555;
+        }
+        
+        .page-btn:disabled {
+            opacity: 0.3;
+            cursor: default;
+        }
+        
+        .page-indicator {
+            font-size: 12px;
+            color: #777;
+            align-self: center;
+        }
+        
+        .back-btn {
+            position: absolute;
+            left: 30px;
+            bottom: 30px;
+            font-size: 12px;
+            color: #777;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.5s ease, color 0.3s ease;
+            pointer-events: none;
+            text-transform: lowercase;
+        }
+        
+        .back-btn.visible {
+            opacity: 1;
+            pointer-events: all;
+            animation: fadeInUp 0.5s ease;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .back-btn:hover {
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="circle" id="menu-toggle"></div>
+    
+    <div class="about-container" id="about-container">
+        <div class="about-heading">about</div>
+        <div class="about-text">
+            im faiz,<br><br>
+            tldr; i wander through the unlit alleys of the internet, hunting for paradoxes that defy the obvious.<br><br>
+            my mind is anchored in science, yet sails on the vast seas of large language models.<br><br>
+            i carry with me the quiet weight of philosophy, the echoes of history, and the strategy of cricket and chess.
+        </div>
+    </div>
+    
+    <div class="menu" id="menu">
+        <div class="menu-item" id="projects-btn">projects</div>
+        <div class="menu-item" id="thoughts-btn">thoughts</div>
+    </div>
+    
+    <div class="projects-content" id="projects-content">
+        <div class="projects-list">
+            <!-- Page 1 -->
+            <div class="project-page" id="page-1">
+                <div class="project-item">
+                    <div class="project-name">
+                        <a href="https://w-atom.vercel.app/" target="_blank">atom</a>
+                    </div>
+                    <div class="project-description">
+                        memes are today's storytelling, and this platform makes it seamless. from templates to your own photos, turn raw ideas into punchy, shareable content.
+                    </div>
+                </div>
+                
+                <div class="project-item">
+                    <div class="project-name">
+                        <a href="https://askcosmos.vercel.app/" target="_blank">askcosmos</a>
+                    </div>
+                    <div class="project-description">
+                        a minimal and aesthetic AI wrapper trained on ancient wisdom LLM. experience timeless knowledge through a clean interface that strips away distractions, letting profound insights speak for themselves. where ancient philosophy meets modern AI in perfect simplicity.
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Page 2 -->
+            <div class="project-page" id="page-2" style="display: none;">
+                <div class="project-item">
+                    <div class="project-name">
+                        <a href="https://structure-green.vercel.app/" target="_blank">cadence</a>
+                    </div>
+                    <div class="project-description">
+                        a minimalist prompt structuring tool designed for clarity and precision. transform chaotic thoughts into well-organized prompts that deliver better AI responses. features a clean, distraction-free interface with intelligent formatting that helps you communicate more effectively with language models.
+                    </div>
+                </div>
+                
+                <div class="project-item">
+                    <div class="project-name">
+                        <a href="https://y-verba.vercel.app/" target="_blank">verba</a>
+                    </div>
+                    <div class="project-description">
+                        an AI-powered blog generation tool that transforms simple topics into comprehensive blog posts. just type your topic and watch as intelligent algorithms craft engaging, well-structured content. perfect for content creators who need quality articles quickly without sacrificing depth or readability.
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Page 3 -->
+            <div class="project-page" id="page-3" style="display: none;">
+                <div class="project-item">
+                    <div class="project-name">
+                        <a href="https://w-typora.vercel.app/" target="_blank">typora</a>
+                    </div>
+                    <div class="project-description">
+                        a sophisticated typography exploration tool that showcases the art of font design. browse through curated font collections, experiment with different typefaces, and discover how typography shapes digital experiences. features interactive font previews, customizable sizing, and copyable CSS code for seamless integration.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="pagination" id="pagination">
+            <button class="page-btn" id="prev-btn">previous</button>
+            <div class="page-indicator" id="page-indicator">1/3</div>
+            <button class="page-btn" id="next-btn">next</button>
+        </div>
+    </div>
+    
+    <div class="thoughts-content" id="thoughts-content">
+        fragments of ideas, half-formed theories, and occasional clarity.<br><br>
+        the internal monologue externalized.
+    </div>
+    
+    <div class="back-btn" id="back-btn">back</div>
+    
+    <footer>
+        <a href="#" target="_blank">x</a>
+        <a href="#" target="_blank">github</a>
+    </footer>
+
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const aboutContainer = document.getElementById('about-container');
+        const menu = document.getElementById('menu');
+        const projectsBtn = document.getElementById('projects-btn');
+        const thoughtsBtn = document.getElementById('thoughts-btn');
+        const projectsContent = document.getElementById('projects-content');
+        const thoughtsContent = document.getElementById('thoughts-content');
+        const backBtn = document.getElementById('back-btn');
+        const pagination = document.getElementById('pagination');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const pageIndicator = document.getElementById('page-indicator');
+        
+        const page1 = document.getElementById('page-1');
+        const page2 = document.getElementById('page-2');
+        const page3 = document.getElementById('page-3');
+        
+        let currentView = 'about';
+        let currentPage = 1;
+        const totalPages = 3;
+        
+        menuToggle.addEventListener('click', function() {
+            if (currentView === 'about') {
+                // Show menu
+                aboutContainer.classList.add('hidden');
+                menu.classList.add('visible');
+                currentView = 'menu';
+            } else if (currentView === 'menu') {
+                // Return to about
+                menu.classList.remove('visible');
+                aboutContainer.classList.remove('hidden');
+                currentView = 'about';
+                backBtn.classList.remove('visible');
+            } else {
+                // Return to menu from projects/thoughts
+                if (currentView === 'projects') {
+                    projectsContent.classList.remove('visible');
+                } else if (currentView === 'thoughts') {
+                    thoughtsContent.classList.remove('visible');
+                }
+                menu.classList.add('visible');
+                currentView = 'menu';
+                backBtn.classList.remove('visible');
+            }
+        });
+        
+        projectsBtn.addEventListener('click', function() {
+            menu.classList.remove('visible');
+            projectsContent.classList.add('visible');
+            currentView = 'projects';
+            backBtn.classList.add('visible');
+            
+            // Reset to page 1
+            showPage(1);
+        });
+        
+        thoughtsBtn.addEventListener('click', function() {
+            menu.classList.remove('visible');
+            thoughtsContent.classList.add('visible');
+            currentView = 'thoughts';
+            backBtn.classList.add('visible');
+        });
+        
+        backBtn.addEventListener('click', function() {
+            if (currentView === 'projects') {
+                projectsContent.classList.remove('visible');
+            } else if (currentView === 'thoughts') {
+                thoughtsContent.classList.remove('visible');
+            }
+            menu.classList.add('visible');
+            currentView = 'menu';
+            backBtn.classList.remove('visible');
+        });
+        
+        prevBtn.addEventListener('click', function() {
+            if (currentPage > 1) {
+                showPage(currentPage - 1);
+            }
+        });
+        
+        nextBtn.addEventListener('click', function() {
+            if (currentPage < totalPages) {
+                showPage(currentPage + 1);
+            }
+        });
+        
+        function showPage(pageNumber) {
+            // Hide all pages
+            page1.style.display = 'none';
+            page2.style.display = 'none';
+            page3.style.display = 'none';
+            
+            // Show the selected page
+            if (pageNumber === 1) {
+                page1.style.display = 'block';
+            } else if (pageNumber === 2) {
+                page2.style.display = 'block';
+            } else if (pageNumber === 3) {
+                page3.style.display = 'block';
+            }
+            
+            // Update button states
+            prevBtn.disabled = pageNumber === 1;
+            nextBtn.disabled = pageNumber === totalPages;
+            
+            // Update page indicator
+            pageIndicator.textContent = `${pageNumber}/${totalPages}`;
+            
+            currentPage = pageNumber;
+        }
+    </script>
+</body>
+</html>
